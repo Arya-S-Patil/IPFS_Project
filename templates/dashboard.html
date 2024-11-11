@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dashboard | IPFS Storage System</title>
+</head>
+<body>
+    <h1>Welcome, {{ username }}</h1>
+    <form method="post">
+        <input type="text" name="search" placeholder="Search files" required>
+        <button type="submit">Search</button>
+    </form>
+    
+    <h2>Your Files</h2>
+    {% if files %}
+        <ul>
+        {% for file in files %}
+            <li>{{ file.filename }} (CID: {{ file.cid }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No files found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('upload') }}">Upload New File</a>
+    <br>
+    <a href="{{ url_for('logout') }}">Log Out</a>
+</body>
+</html>
+
