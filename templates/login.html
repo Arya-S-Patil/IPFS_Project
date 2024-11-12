@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
-{% block title %}Login | IPFS Storage System{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+<div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
     <div class="card bg-dark text-light p-4" style="width: 20rem;">
-        <h2 class="card-title text-center">Sign In</h2>
+        <h3 class="card-title text-center">Login</h3>
         <form method="post">
             <div class="mb-3">
-                <label for="username" class="form-label">Username:</label>
+                <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password:</label>
+                <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Sign In</button>
