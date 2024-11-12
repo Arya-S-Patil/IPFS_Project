@@ -1,29 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Dashboard | IPFS Storage System</title>
-</head>
-<body>
-    <h1>Welcome, {{ username }}</h1>
-    <form method="post">
-        <input type="text" name="search" placeholder="Search files" required>
-        <button type="submit">Search</button>
-    </form>
-    
-    <h2>Your Files</h2>
-    {% if files %}
-        <ul>
-        {% for file in files %}
-            <li>{{ file.filename }} (CID: {{ file.cid }})</li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No files found.</p>
+{% extends "base.html" %}
+
+{% block title %}Dashboard | IPFS Storage System{% endblock %}
+
+{% block content %}
+<h1 class="text-center mb-4">Dashboard</h1>
+<form method="post" class="mb-4">
+    <input type="text" name="search" class="form-control" placeholder="Search files by name" aria-label="Search">
+</form>
+<div class="d-flex justify-content-center flex-wrap gap-4">
+    {% for file in files %}
+    <div class="card bg-dark text-light" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{ file.filename }}</h5>
+            <p class="card-text">CID: {{ file.cid }}</p>
+            <a href="#" class="btn btn-primary">Download</a>
+        </div>
+    </div>
+    {% endfor %}
+    {% if files|length == 0 %}
+    <p class="text-center">No files found.</p>
     {% endif %}
-
-    <a href="{{ url_for('upload') }}">Upload New File</a>
-    <br>
-    <a href="{{ url_for('logout') }}">Log Out</a>
-</body>
-</html>
-
+</div>
+{% endblock %}
