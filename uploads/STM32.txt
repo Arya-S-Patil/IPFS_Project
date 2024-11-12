@@ -1,0 +1,35 @@
+//Code for STM32
+#include "mbed.h"
+
+// Pin definitions
+DigitalIn button(PA_0); // Push button pin
+DigitalOut ledInternal(LED1); // Internal LED on Nucleo
+Serial pc(USBTX, USBRX); // Serial communication with Pico
+
+// Function to blink internal LED based on IR sensor detection
+void blinkInternalLED() {
+    ledInternal = 1; // Turn on internal LED
+    wait(0.2);       // Wait for 200 ms
+    ledInternal = 0; // Turn off internal LED
+}
+
+int main() {
+    while (true) {
+        // Check if the button is pressed
+        if (button == 0) { // Button pressed (active low)
+            pc.putc('1'); // Send signal to Pico to flash its LED
+            wait(0.2); // Debounce delay
+            while (button == 0); // Wait for button release
+        }
+
+        // Check if there's data from the Pico for IR sensor detection
+        if (pc.readable()) {
+            char c = pc.getc(); // Read character from Pico
+            if (c == '1') {
+                blinkInternalLED(); // Blink internal LED if obstacle detected
+            }
+        }
+
+        wait(0.1); // Short delay
+    }
+}

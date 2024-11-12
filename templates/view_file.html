@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View File</title>
+</head>
+<body>
+    <h1>File Uploaded Successfully!</h1>
+    <p>View your file using the link below:</p>
+    <!-- Link to view the file via local IPFS gateway -->
+    <a href="{{ file_url }}" target="_blank">{{ file_url }}</a>
+
+    <h2>Preview:</h2>
+    <!-- If it's a viewable file (like an image or PDF), we embed it -->
+    <iframe src="{{ file_url }}" style="width:100%; height:500px;"></iframe>
+</body>
+</html>
+

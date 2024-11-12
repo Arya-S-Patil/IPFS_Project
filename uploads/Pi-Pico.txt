@@ -1,0 +1,58 @@
+//Code for Pi Pico
+#include "pico/stdlib.h"
+#include "hardware/gpio.h"
+#include "hardware/uart.h"
+
+// Define GPIO pins
+const uint LED_EXTERNAL_PIN = 13; // LED that blinks on button press
+const uint LED_SENSOR_PIN = 11;    // LED for IR sensor output
+const uint IR_SENSOR_PIN = 15;      // IR sensor output pin
+
+// UART configuration
+const uint UART_ID = uart0;
+const uint UART_TX_PIN = 1;       // TX pin for Pico
+const uint UART_RX_PIN = 0;       // RX pin for Pico
+
+// Function to flash the LED connected to pin 13
+void flash_external_led() {
+    gpio_put(LED_EXTERNAL_PIN, 1); // Turn external LED on
+    sleep_ms(200);                  // Wait for 200 ms
+    gpio_put(LED_EXTERNAL_PIN, 0); // Turn external LED off
+}
+
+// Function to read IR sensor data and control the LED on Nucleo
+void read_sensor() {
+    while (true) {
+        int sensor_value = gpio_get(IR_SENSOR_PIN); // Read the IR sensor value
+        if (sensor_value == 0) { // Assuming LOW means "obstacle detected"
+            // Notify Nucleo about the obstacle
+            uart_putc(UART_ID, '1'); // Send signal to Nucleo
+        } else {
+            uart_putc(UART_ID, '0'); // No obstacle detected
+        }
+        sleep_ms(100); 
+    }
+}
+
+int main() {
+    // Initialize the LED pins
+    gpio_init(LED_EXTERNAL_PIN);
+    gpio_set_dir(LED_EXTERNAL_PIN, GPIO_OUT);
+    
+    gpio_init(LED_SENSOR_PIN);
+    gpio_set_dir(LED_SENSOR_PIN, GPIO_OUT);
+    
+    // Initialize the IR sensor pin
+    gpio_init(IR_SENSOR_PIN);
+    gpio_set_dir(IR_SENSOR_PIN, GPIO_IN);
+
+    // Initialize UART
+    uart_init(UART_ID, 9600);
+    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
+    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+
+    // Start the IR sensor reading in a loop
+    read_sensor();
+
+    return 0;
+}
